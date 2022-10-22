@@ -8,6 +8,10 @@ const all = require("./languages").Language;
 const app = express();
 let port = process.env.PORT || 3016;
 
+// View Engine
+app.set("view engine", "ejs");
+app.set("views", "restAPI/views");
+
 // Response Body parser
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ limit: "500mb", extended: true }));
@@ -33,12 +37,27 @@ function getData(response) {
     for (const e of response) {
         const translated = e.text;
         const original = e.raw[1][1];
-        dict.push({ key: original, value: translated });
+        const fullname = getFullname(original);
+        dict.push({ key: fullname, value: translated });
     }
     return dict;
 }
 
-app.use("/translate", async(req, res, next) => {
+function getFullname(shortcut) {
+    const full_list = all.getAll();
+    for (const key in full_list) {
+        if (Object.hasOwnProperty.call(full_list, key)) {
+            if (key === shortcut) {
+                return full_list[key];
+            }
+        }
+    }
+}
+app.get("/", (req, res) => {
+    res.render("index", { result: "" });
+});
+
+app.post("/translate", async(req, res, next) => {
     const txt = req.body.txt;
     // testing
     //const langs = ["en", "ln"];
@@ -53,6 +72,7 @@ app.use("/translate", async(req, res, next) => {
                     new Promise((rs, rj) => {
                         try {
                             rs(translate(txt, { to: lang }));
+                            console.log(lang, " is completed");
                         } catch (error) {
                             rj(error);
                         }
@@ -61,16 +81,19 @@ app.use("/translate", async(req, res, next) => {
             }
         }
     } catch (error) {
-        return res.status(401).send(error);
+        return res.status(401).render("index", err);
+        //return res.status(401).send(error);
     }
     Promise.all(promises)
         .then((v) => {
             const result = getData(v);
+            console.log(result);
             console.info("I finished, let me sleep now *___*");
-            return res.status(200).send(result);
+            return res.status(200).render("index", { result: result });
         })
         .catch((err) => {
-            return res.status(401).send(err);
+            return res.status(401).render("index", err);
+            //return res.status(401).send(err);
         });
 });
 
