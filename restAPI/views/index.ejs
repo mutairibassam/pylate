@@ -16,6 +16,7 @@
     </form>
     <p>
         <% if (typeof result != undefined || result != "") { %>
+            <a href="/" id="new">Try again...</a>
             <% for( let i = 0; i < result.length; i++ ) { %>
                 <li>
                     <%= result[i].key + " --> " %>

@@ -89,7 +89,6 @@ app.post("/translate", async(req, res, next) => {
                     new Promise((rs, rj) => {
                         try {
                             rs(translate(txt, { to: lang }));
-                            console.log(lang, " is completed");
                         } catch (error) {
                             rj(error);
                         }
