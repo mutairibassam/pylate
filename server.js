@@ -73,6 +73,7 @@ app.get("/", (req, res) => {
 app.post("/translate", async(req, res, next) => {
     // get value to be translated
     const txt = req.body.txt;
+    console.log(txt);
 
     // get all supported languages
     const langs = all.getAll();
@@ -98,7 +99,7 @@ app.post("/translate", async(req, res, next) => {
         }
     } catch (error) {
         // return error to ui
-        return res.status(401).render("index", err);
+        return res.status(401).render("index", {result: err});
     }
 
     // execute all promises
@@ -111,7 +112,53 @@ app.post("/translate", async(req, res, next) => {
         })
         .catch((err) => {
             // return error to ui
-            return res.status(401).render("index", err);
+            return res.status(401).render("index", {result: err});
+        });
+});
+
+// translate end-point
+app.post("/translate2", async(req, res, next) => {
+    // get value to be translated
+    const txt = req.body.txt;
+
+    // get all supported languages
+    const langs = all.getAll();
+
+    // a new promise to have all
+    let promises = [];
+
+    try {
+        console.log("translating... ");
+        for (const lang in langs) {
+            if (Object.hasOwnProperty.call(langs, lang)) {
+                // create a new promise for each language
+                promises.push(
+                    new Promise((rs, rj) => {
+                        try {
+                            rs(translate(txt, { to: lang }));
+                        } catch (error) {
+                            rj(error);
+                        }
+                    })
+                );
+            }
+        }
+    } catch (error) {
+        // return error to ui
+        return res.status(401).send({result: err});
+    }
+
+    // execute all promises
+    Promise.all(promises)
+        .then((v) => {
+            const result = getData(v);
+            console.info("I finished, let me sleep now *___*");
+            // return result to ui
+            return res.status(200).send({ result: result });
+        })
+        .catch((err) => {
+            // return error to ui
+            return res.status(401).send({result: err});
         });
 });
 

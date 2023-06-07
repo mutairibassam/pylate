@@ -1,30 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <h1>Pylate</h1>
     <form action="/translate" method="post">
-        <input type="textarea" id="txt" name="txt">
-        <input type="submit" value="Translate" /><br><br>
+      <input type="textarea" id="txt" name="txt" />
+      <input type="submit" value="Translate" /><br /><br />
     </form>
+    <p id="message"></p>
     <p>
-        <% if (typeof result != undefined || result != "") { %>
-            <a href="/" id="new">Try again...</a>
-            <% for( let i = 0; i < result.length; i++ ) { %>
-                <li>
-                    <%= result[i].key + " --> " %>
-                        <%= result[i].value %>
-                </li>
-                <% } %>
-                    <% } %>
+      <% if (typeof result != undefined || result != "") { %>
+      <a href="/" id="new">Try again...</a>
+      <% for( let i = 0; i < result.length; i++ ) { %>
+      <li><%= result[i].key + " --> " %> <%= result[i].value %></li>
+      <% } %> <% } %>
     </p>
-</body>
+    <button onclick="openYouTubeSearch()">Search on YouTube</button>
+  </body>
 
+  <script>
+    function openYouTubeSearch() {
+      var sentence = document.getElementById("txt");
+      const data = {
+        txt: sentence.value,
+      };
+      fetch("http://localhost:3016/translate2", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((r) => {
+          Object.keys(r).forEach(function (key) {
+            var value = r[key];
+            // var promises = [];
+            for (let i = 0; i < value.length; i++) {
+              const query = value[i].value;
+              console.log(query);
+              var url = "https://www.youtube.com/results?search_query=" + query;
+              window.open(url, "_blank");
+            }
+          });
+        })
+        .catch((error) => {
+          document.getElementById("message").value = error;
+          console.error("Error:", error);
+        });
+    }
+  </script>
 </html>
