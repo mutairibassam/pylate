@@ -29,7 +29,7 @@ app.use((req, res, next) => {
 });
 
 app.listen(port, async() => {
-    console.info("Node server is running.");
+    console.info(`Node server is running on port ${port}`);
 });
 
 /**
@@ -99,7 +99,7 @@ app.post("/translate", async(req, res, next) => {
         }
     } catch (error) {
         // return error to ui
-        return res.status(401).render("index", {result: err});
+        return res.status(401).render("index", err);
     }
 
     // execute all promises
@@ -108,11 +108,11 @@ app.post("/translate", async(req, res, next) => {
             const result = getData(v);
             console.info("I finished, let me sleep now *___*");
             // return result to ui
-            return res.status(200).render("index", { result: result });
+            return res.status(200).render("index", { result: result } );
         })
         .catch((err) => {
             // return error to ui
-            return res.status(401).render("index", {result: err});
+            return res.status(401).render("index", err);
         });
 });
 
