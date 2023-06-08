@@ -11,7 +11,7 @@
     <h1>Pylate</h1>
     <form action="/translate" method="post">
       <input type="textarea" id="txt" name="txt" />
-      <br>br
+      <br><br>
       <label>
         <input type="radio" name="flag" value="1" checked>
         group 1
@@ -39,8 +39,7 @@
       <% if (typeof result != undefined || result != "") { %>
       <% for( let i = 0; i < result.length; i++ ) { %>
       <li><%= result[i].key + " --> " %> <%= result[i].value %></li>
-      <% } %> 
-      <% } %>
+      <% } %> <% } %>
     </p>
     <button onclick="openYouTubeSearch()">Search on YouTube</button>&nbsp;&nbsp;&nbsp;&nbsp;
     <a href="/" id="new">Try again...</a>
