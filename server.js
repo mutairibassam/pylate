@@ -111,6 +111,7 @@ app.post("/translate", async(req, res, next) => {
         }
     } catch (error) {
         // return error to ui
+        console.log("error -> " + error);
         return res.status(401).render("index", err);
     }
 
@@ -124,6 +125,7 @@ app.post("/translate", async(req, res, next) => {
         })
         .catch((err) => {
             // return error to ui
+            console.log("error -> " + err);
             return res.status(401).render("index", err);
         });
 });
@@ -170,6 +172,7 @@ app.post("/translate2", async(req, res, next) => {
         }
     } catch (error) {
         // return error to ui
+        console.log("error -> " + error);
         return res.status(401).send({result: err});
     }
 
@@ -183,6 +186,7 @@ app.post("/translate2", async(req, res, next) => {
         })
         .catch((err) => {
             // return error to ui
+            console.log("error -> " + err);
             return res.status(401).send({result: err});
         });
 });
