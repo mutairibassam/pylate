@@ -103,6 +103,7 @@ app.post("/translate", async(req, res, next) => {
                         try {
                             rs(translate(txt, { to: lang }));
                         } catch (error) {
+                            console.log("promise error -> " + error); 
                             rj(error);
                         }
                     })
@@ -111,7 +112,7 @@ app.post("/translate", async(req, res, next) => {
         }
     } catch (error) {
         // return error to ui
-        console.log("error -> " + error);
+        console.log("first error -> " + error);
         return res.status(401).render("index", err);
     }
 
@@ -125,7 +126,7 @@ app.post("/translate", async(req, res, next) => {
         })
         .catch((err) => {
             // return error to ui
-            console.log("error -> " + err);
+            console.log("second error -> " + err);
             return res.status(401).render("index", err);
         });
 });
@@ -164,6 +165,7 @@ app.post("/translate2", async(req, res, next) => {
                         try {
                             rs(translate(txt, { to: lang }));
                         } catch (error) {
+                            console.log("promise error -> " + error); 
                             rj(error);
                         }
                     })
@@ -172,7 +174,7 @@ app.post("/translate2", async(req, res, next) => {
         }
     } catch (error) {
         // return error to ui
-        console.log("error -> " + error);
+        console.log("first error -> " + error);
         return res.status(401).send({result: err});
     }
 
@@ -186,7 +188,7 @@ app.post("/translate2", async(req, res, next) => {
         })
         .catch((err) => {
             // return error to ui
-            console.log("error -> " + err);
+            console.log("second error -> " + err);
             return res.status(401).send({result: err});
         });
 });
