@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const translate = require("google-translate-api-x");
 
-const all = require("./languages").Language;
+const language = require("./languages").Language;
 
 // Initialzie Express
 const app = express();
@@ -54,7 +54,7 @@ function getData(response) {
 
 // replace abbreviation with country full name
 function getFullname(shortcut) {
-    const full_list = all.getAll();
+    const full_list = language.getAll();
     for (const key in full_list) {
         if (Object.hasOwnProperty.call(full_list, key)) {
             if (key === shortcut) {
@@ -73,10 +73,22 @@ app.get("/", (req, res) => {
 app.post("/translate", async(req, res, next) => {
     // get value to be translated
     const txt = req.body.txt;
-    console.log(txt);
-
+    const group = req.body.flag;
+    let langs = {}
     // get all supported languages
-    const langs = all.getAll();
+    if(group === "1") {
+        langs = language.group1();
+    } else if (group === "2") {
+        langs = language.group2();
+    } else if (group === "3") {
+        langs = language.group3();
+    } else if (group === "4") {
+        langs = language.group4();
+    } else if (group === "5") {
+        langs = language.group5();
+    } else {
+        return 'invalid group id'
+    }
 
     // a new promise to have all
     let promises = [];
@@ -120,9 +132,22 @@ app.post("/translate", async(req, res, next) => {
 app.post("/translate2", async(req, res, next) => {
     // get value to be translated
     const txt = req.body.txt;
-
+    const group = req.body.flag;
+    let langs = {}
     // get all supported languages
-    const langs = all.getAll();
+    if(group === "1") {
+        langs = language.group1();
+    } else if (group === "2") {
+        langs = language.group2();
+    } else if (group === "3") {
+        langs = language.group3();
+    } else if (group === "4") {
+        langs = language.group4();
+    } else if (group === "5") {
+        langs = language.group5();
+    } else {
+        return 'invalid group id'
+    }
 
     // a new promise to have all
     let promises = [];

@@ -11,24 +11,52 @@
     <h1>Pylate</h1>
     <form action="/translate" method="post">
       <input type="textarea" id="txt" name="txt" />
-      <input type="submit" value="Translate" /><br /><br />
+      <br>br
+      <label>
+        <input type="radio" name="flag" value="1" checked>
+        group 1
+      </label>
+      <label>
+        <input type="radio" name="flag" value="2">
+        group 2
+      </label>
+      <label>
+        <input type="radio" name="flag" value="3">
+        group 3
+      </label>
+      <label>
+        <input type="radio" name="flag" value="4">
+        group 4
+      </label>
+      <label>
+        <input type="radio" name="flag" value="5">
+        group 5
+      </label><br><br>
+      <input type="submit" value="Translate" />
     </form>
-    <p id="message"></p>
     <p>
+
       <% if (typeof result != undefined || result != "") { %>
-      <a href="/" id="new">Try again...</a>
       <% for( let i = 0; i < result.length; i++ ) { %>
       <li><%= result[i].key + " --> " %> <%= result[i].value %></li>
-      <% } %> <% } %>
+      <% } %> 
+      <% } %>
     </p>
-    <button onclick="openYouTubeSearch()">Search on YouTube</button>
+    <button onclick="openYouTubeSearch()">Search on YouTube</button>&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/" id="new">Try again...</a>
+
+    <p id="message"></p>
+
+
   </body>
 
   <script>
     function openYouTubeSearch() {
       var sentence = document.getElementById("txt");
+      const flag = document.querySelector('input[name="flag"]:checked');
       const data = {
         txt: sentence.value,
+        flag: flag.value
       };
       fetch("http://localhost:3016/translate2", {
         method: "POST",
