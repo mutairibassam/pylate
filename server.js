@@ -86,6 +86,8 @@ app.post("/translate", async(req, res, next) => {
         langs = language.group4();
     } else if (group === "5") {
         langs = language.group5();
+    } else if (group === "6") {
+        langs = language.getAll();
     } else {
         return 'invalid group id'
     }
@@ -148,6 +150,8 @@ app.post("/translate2", async(req, res, next) => {
         langs = language.group4();
     } else if (group === "5") {
         langs = language.group5();
+    } else if (group === "6") {
+        langs = language.getAll();
     } else {
         return 'invalid group id'
     }
